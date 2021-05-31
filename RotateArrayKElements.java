@@ -35,7 +35,7 @@ public class RotateArrayKElements {
 			n[k + i] = temp;
 		}
 
-		System.out.println(n);
+		System.out.println(Arrays.toString(n));
 	}
 
 }
