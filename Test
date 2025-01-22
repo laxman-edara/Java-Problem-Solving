@@ -1,0 +1,64 @@
+package com.laxman.sample;
+
+import java.util.*;
+
+public class WeightedRoundRobin {
+
+	static class Server {
+		String name;
+		int weight;
+		int currentWeight;
+
+		public Server(String name, int weight) {
+			this.name = name;
+			this.weight = weight;
+			this.currentWeight = 0;
+		}
+	}
+
+	public static void main(String[] args) {
+		List<Server> servers = new ArrayList<>();
+
+		// Add servers with their respective weights
+		servers.add(new Server("c1", 1));
+		servers.add(new Server("c2", 4));
+		servers.add(new Server("c3", 2));
+
+		// Total number of rounds (turns) to be scheduled
+		int totalRounds = 7;
+
+		// Perform the weighted round-robin scheduling
+		for (int i = 0; i < totalRounds; i++) {
+			Server selectedServer = getNextServer(servers);
+			System.out.println("Turn " + (i + 1) + ": " + 
+selectedServer
+.name);
+		}
+	}
+
+	public static Server getNextServer(List<Server> servers) {
+		Server selectedServer = null;
+		int maxWeight = Integer.MIN_VALUE;
+
+		// Find the server with the highest currentWeight
+		for (Server server : servers) {
+			server.currentWeight += server.weight; 
+// Increase current weight based on its weight
+			if (server.currentWeight > maxWeight) {
+				maxWeight = server.currentWeight;
+				selectedServer = server;
+			}
+		}
+		selectedServer.currentWeight -= getTotalWeight(servers);
+		return selectedServer;
+	}
+
+	// Calculate the total weight of all servers
+	public static int getTotalWeight(List<Server> servers) {
+		int totalWeight = 0;
+		for (Server server : servers) {
+			totalWeight += server.weight;
+		}
+		return totalWeight;
+	}
+}
